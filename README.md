@@ -1,73 +1,175 @@
-# React + TypeScript + Vite
+# Admin Users Dashboard (React + TypeScript + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Practice project for a senior frontend interview task.
 
-Currently, two official plugins are available:
+## Objective
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Build a production-like admin dashboard using REST API data with:
 
-## React Compiler
+- Users list page
+- Search, filter, sort, pagination
+- User details page
+- Edit role/status in modal
+- Local persistence via localStorage
+- Unit and component tests
+- Accessibility basics
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- React 19
+- TypeScript
+- Vite
+- React Router
+- Vitest
+- React Testing Library
+- Docker + Docker Compose
+- JSONPlaceholder API
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Features
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- `/users` page with table
+- Search by name/email
+- Filter by role and status
+- Sort by name (A-Z) and created date (newest)
+- Pagination (5 per page)
+- Loading, error, empty states
+- `/users/:id` details page
+- Edit modal for role and status
+- Save edits to localStorage
+- Keyboard-close modal with `Esc`
+- Unit tests for filter/sort utilities
+- Component test for list + filtering behavior
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Project Structure
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```txt
+src/
+  api/
+  components/
+  features/
+  hooks/
+  pages/
+  test/
+  types/
+  utils/
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Prerequisites
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- Windows + WSL2
+- Docker Desktop
+- Git
+- Node.js (optional for non-Docker run)
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Environment Setup
+
+Create `.env` from `.env.example` and set your WSL UID/GID:
+
+```bash
+id -u
+id -g
 ```
+
+Example:
+
+```env
+UID=<your-id-u>
+GID=<your-id-g>
+```
+
+## Run With Docker (Recommended)
+
+```bash
+docker compose down -v --remove-orphans
+docker compose up --build
+```
+
+App URL:
+
+- http://localhost:5173
+
+## Install Dependencies Manually (If Needed)
+
+```bash
+docker compose run --rm web sh -lc "npm install --include=dev"
+```
+
+## Run Tests
+
+```bash
+docker compose run --rm web sh -lc "npm run test"
+```
+
+## Run Lint
+
+```bash
+docker compose run --rm web sh -lc "npm run lint"
+```
+
+## Build
+
+```bash
+docker compose run --rm web sh -lc "npm run build"
+```
+
+## Local Run Without Docker
+
+```bash
+npm install
+npm run dev
+```
+
+## Data Source
+
+- `GET https://jsonplaceholder.typicode.com/users`
+- Role and status are augmented locally by user id
+- Edit changes are persisted in localStorage
+
+## Troubleshooting
+
+Permission denied on `package-lock.json`:
+
+```bash
+sudo chown -R $(id -u):$(id -g) .
+docker compose down -v
+docker compose up --build
+```
+
+`vite: not found`:
+
+- Dependencies were not installed in container volume
+
+```bash
+docker compose run --rm web sh -lc "npm install --include=dev"
+```
+
+## Git Workflow
+
+Suggested commit order:
+
+1. `chore: bootstrap project and docker setup`
+2. `feat: users list with search filter sort pagination`
+3. `feat: user details and edit modal with localStorage`
+4. `test: add unit and component tests`
+5. `fix: a11y and edge case handling`
+
+## Definition of Done
+
+- App runs via Docker
+- All required pages and states implemented
+- Tests pass
+- Lint passes
+- README is clear for a new developer to run quickly
+
+## Learning Resources
+
+- React: https://react.dev/learn
+- TypeScript: https://www.typescriptlang.org/docs/
+- Vite: https://vite.dev/guide/
+- React Router: https://reactrouter.com/start
+- Vitest: https://vitest.dev/guide/
+- Testing Library: https://testing-library.com/docs/react-testing-library/intro/
+- Docker Compose: https://docs.docker.com/compose/
+- JSONPlaceholder: https://jsonplaceholder.typicode.com/
+- WCAG: https://www.w3.org/WAI/standards-guidelines/wcag/
+- web.dev Accessibility: https://web.dev/accessibility/
